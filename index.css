@@ -5,12 +5,16 @@ body {
     padding: 0;
 }
 .container {
-    max-width: 600px;
+    max-width: 900px;
     margin: 60px auto;
     background: #fff;
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.08);
     padding: 32px 24px;
+    display: flex; /* Enable flex container */
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    justify-content: space-between; /* Distribute items evenly */
+    align-items: flex-start; /* Align items to the top */
     min-height: 600px;
 }
 h1 {
@@ -20,10 +24,16 @@ h1 {
 ul {
     list-style: none;
     padding: 0;
+    width: 100%; /* Allow ul to span the container width */
+    display: flex; /* Make li elements align horizontally */
+    flex-wrap: wrap; /* Allow items to wrap to the next line */
+    gap: 16px; /* Add space between items */
+    justify-content: flex-start; /* Align items to the start */
 }
 li {
-    margin: 18px 0;
-    /* height: 100px; */
+    margin: 0; /* Remove margin as gap is used */
+    flex-grow: 1; /* Allow items to grow */
+    flex-basis: calc(50% - 16px); /* Set base width for 2 items per row, accounting for gap */
 }
 a {
     height: 50px;
@@ -48,4 +58,11 @@ a .icon {
 a:hover {
     background: #1976d2;
     color: #fff;
+}
+
+/* Optional: Adjustments for smaller screens */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stack columns on smaller screens */
+    }
 }
