@@ -4,64 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fuel Prices</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6fb;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-            padding: 32px 24px;
-        }
-        h1 {
-            text-align: center;
-            color: #2d3a4b;
-        }
-        .region-select {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 24px;
-        }
-        select {
-            font-size: 1.1em;
-            padding: 6px 12px;
-            border-radius: 6px;
-            border: 1px solid #b0b0b0;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 16px;
-        }
-        th, td {
-            padding: 10px 8px;
-            border-bottom: 1px solid #e0e0e0;
-            text-align: left;
-        }
-        th {
-            background: #e8f0fe;
-            color: #1a237e;
-        }
-        tr:hover {
-            background: #f1f7ff;
-        }
-    </style>
+    <link rel="stylesheet" href="fuel.css">
+    <link rel="icon" type="image/png" href="icons/luxtronic.png">
 </head>
 <body>
     <div class="container">
+        <a class="back-link" href="index.html">&larr; Back to Portal</a>
         <h1>Fuel Prices</h1>
+        <p class="subtitle">Live fuel prices by region</p>
         <div class="region-select">
             <label for="region">Region: </label>
-            <select id="region"></select>
+            <select id="region" disabled></select>
         </div>
-        <div id="pagination" style="display:flex;justify-content:center;align-items:center;margin-bottom:16px;"></div>
-        <div id="fuel-table"></div>
+        <div class="table-wrap">
+            <div id="fuel-table"><p class="status-message">Loading fuel prices&hellip;</p></div>
+        </div>
+        <div id="pagination"></div>
     </div>
     <script>
     const apiUrl = "https://projectzerothree.info/api.php?format=json";
@@ -90,14 +48,14 @@
             }
             const regionPages = groupedRegions[region];
             if (!regionPages || !regionPages[page]) {
-                document.getElementById('fuel-table').innerHTML = '<p>No data for this region.</p>';
+                document.getElementById('fuel-table').innerHTML = '<p class="status-message">No data for this region.</p>';
                 paginationDiv.innerHTML = '';
                 return;
             }
             const regionData = regionPages[page];
             let html = `<table><thead><tr><th>Name</th><th>Type</th><th>Price</th><th>Suburb</th><th>State</th><th>Postcode</th></tr></thead><tbody>`;
             for (const price of regionData.prices) {
-                html += `<tr><td>${price.name}</td><td>${price.type}</td><td>${price.price}</td><td>${price.suburb}</td><td>${price.state}</td><td>${price.postcode}</td></tr>`;
+                html += `<tr><td>${price.name}</td><td>${price.type}</td><td class="price">${price.price}</td><td>${price.suburb}</td><td>${price.state}</td><td>${price.postcode}</td></tr>`;
             }
             html += '</tbody></table>';
             document.getElementById('fuel-table').innerHTML = html;
@@ -164,7 +122,7 @@
                 paginationDiv.style.display = '';
             })
             .catch(() => {
-                document.getElementById('fuel-table').innerHTML = '<p>Failed to fetch fuel prices.</p>';
+                document.getElementById('fuel-table').innerHTML = '<p class="status-message error">Failed to fetch fuel prices.</p>';
                 regionSelect.disabled = true;
                 paginationDiv.style.display = 'none';
             });
