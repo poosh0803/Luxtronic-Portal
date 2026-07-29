@@ -4,7 +4,7 @@ module.exports = {
       name: 'luxtronic-portal',
       script: 'portal.js',
       env: {
-        PORT: 3000,
+        PORT: 80,
       },
     },
   ],
