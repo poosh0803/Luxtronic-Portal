@@ -25,7 +25,7 @@ Fill in `.env`:
 | Variable                 | Description                                                              |
 | ------------------------- | ------------------------------------------------------------------------- |
 | `MASTEX_PRICE_LIST_URL`   | Supplier catalog URL. Kept out of the HTML source, served via a redirect route (`/links/mastex-price-list`) instead. |
-| `PORT`                    | Port the server listens on (default `3000`).                              |
+| `PORT`                    | Port the server listens on (default `80`).                              |
 
 `.env` is git-ignored — it stays local to each machine that runs the portal.
 
