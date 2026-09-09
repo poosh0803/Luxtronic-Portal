@@ -96,17 +96,13 @@ a:hover {
     text-align: center;
 }
 .notif-panel {
-    position: absolute;
-    top: 60px;
-    right: 24px;
-    width: 340px;
-    max-height: 420px;
+    width: 100%;
+    max-height: 320px;
     overflow-y: auto;
-    background: #fff;
+    background: #fafbfe;
     border: 1px solid #e0e0e0;
     border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    z-index: 10;
+    margin-bottom: 24px;
 }
 .notif-panel-header {
     display: flex;

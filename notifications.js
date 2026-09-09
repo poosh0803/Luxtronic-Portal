@@ -24,6 +24,10 @@
     }
 
     function render() {
+        if (!panel.hidden) {
+            setLastSeen(Date.now());
+        }
+
         const lastSeen = getLastSeen();
         const unread = notifications.filter((n) => new Date(n.createdAt).getTime() > lastSeen).length;
 
@@ -82,12 +86,8 @@
     }
 
     bell.addEventListener('click', () => {
-        const opening = panel.hidden;
         panel.hidden = !panel.hidden;
-        if (opening) {
-            setLastSeen(Date.now());
-            render();
-        }
+        render();
     });
 
     closeBtn.addEventListener('click', () => {
