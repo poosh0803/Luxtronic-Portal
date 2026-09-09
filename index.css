@@ -66,3 +66,108 @@ a:hover {
         flex-direction: column; /* Stack columns on smaller screens */
     }
 }
+
+.header-row {
+    width: 100%;
+    position: relative;
+}
+.notif-bell {
+    position: absolute;
+    top: 4px;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: 1.6em;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+.notif-badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #d32f2f;
+    color: #fff;
+    font-size: 0.5em;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 2px 6px;
+    min-width: 16px;
+    text-align: center;
+}
+.notif-panel {
+    position: absolute;
+    top: 60px;
+    right: 24px;
+    width: 340px;
+    max-height: 420px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    z-index: 10;
+}
+.notif-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+    font-weight: bold;
+    color: #2d3a4b;
+}
+.notif-panel-header button {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    line-height: 1;
+    cursor: pointer;
+    color: #888;
+}
+.notif-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+.notif-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    flex-basis: auto;
+    flex-grow: 0;
+}
+.notif-item:last-child {
+    border-bottom: none;
+}
+.notif-item.notif-info { border-left: 4px solid #1976d2; }
+.notif-item.notif-warning { border-left: 4px solid #f9a825; }
+.notif-item.notif-error { border-left: 4px solid #d32f2f; }
+.notif-title {
+    font-weight: bold;
+    color: #2d3a4b;
+    font-size: 0.95em;
+}
+.notif-message {
+    font-size: 0.9em;
+    color: #333;
+    margin-top: 2px;
+}
+.notif-meta {
+    font-size: 0.75em;
+    color: #888;
+    margin-top: 4px;
+}
+.notif-link {
+    display: inline-block;
+    height: auto;
+    margin-top: 6px;
+    padding: 4px 10px;
+    font-size: 0.8em;
+}
+.notif-empty {
+    padding: 24px 16px;
+    text-align: center;
+    color: #999;
+    font-size: 0.9em;
+}

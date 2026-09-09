@@ -9,7 +9,20 @@
 </head>
 <body>
     <div class="container">
-        <h1>Luxtronic Portal</h1>
+        <div class="header-row">
+            <h1>Luxtronic Portal</h1>
+            <button id="notif-bell" class="notif-bell" aria-label="Notifications" title="Notifications">
+                🔔<span id="notif-badge" class="notif-badge" hidden>0</span>
+            </button>
+        </div>
+        <div id="notif-panel" class="notif-panel" hidden>
+            <div class="notif-panel-header">
+                <span>Notifications</span>
+                <button id="notif-close" aria-label="Close notifications">&times;</button>
+            </div>
+            <ul id="notif-list" class="notif-list"></ul>
+            <div id="notif-empty" class="notif-empty">No notifications yet</div>
+        </div>
         <ul>
             <li><a href="https://www.luxtronic.com.au" target="_blank"><img class="icon" src="icons/website.png" alt="Web Icon">Luxtronic Website</a></li>
             <li><a href="https://www.luxtronic.com.au/odoo" target="_blank"><img class="icon" src="icons/odoo.png" alt="POS Icon">Odoo POS</a></li>
@@ -30,4 +43,5 @@
           <a href="hw.html" style="padding: 8px 18px; font-size: 1em; border-radius: 6px; background: #1976d2; color: #fff; text-decoration: none; box-shadow: 0 1px 4px rgba(0,0,0,0.08); transition: background 0.2s;">View HW Price</a>
         </div>
     </div>
+    <script src="notifications.js" defer></script>
 </body>

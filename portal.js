@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const ROOT = __dirname;
 
@@ -11,6 +12,80 @@ const PORT = process.env.PORT || 3000;
 const REDIRECTS = {
   '/links/mastex-price-list': process.env.MASTEX_PRICE_LIST_URL,
 };
+
+const DATA_DIR = path.join(ROOT, 'data');
+const NOTIFICATIONS_FILE = path.join(DATA_DIR, 'notifications.json');
+const MAX_NOTIFICATIONS = 200;
+const VALID_LEVELS = ['info', 'warning', 'error'];
+
+function readNotifications() {
+  try {
+    return JSON.parse(fs.readFileSync(NOTIFICATIONS_FILE, 'utf8'));
+  } catch {
+    return [];
+  }
+}
+
+function writeNotifications(list) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+  fs.writeFileSync(NOTIFICATIONS_FILE, JSON.stringify(list, null, 2));
+}
+
+function readJsonBody(req, callback) {
+  let body = '';
+  let tooLarge = false;
+  req.on('data', (chunk) => {
+    body += chunk;
+    if (body.length > 1e6) {
+      tooLarge = true;
+      req.destroy();
+    }
+  });
+  req.on('end', () => {
+    if (tooLarge) return;
+    try {
+      callback(null, body ? JSON.parse(body) : {});
+    } catch (err) {
+      callback(err);
+    }
+  });
+}
+
+function sendJson(res, status, obj) {
+  send(res, status, JSON.stringify(obj), { 'Content-Type': 'application/json; charset=utf-8' });
+}
+
+function handleGetNotifications(res) {
+  sendJson(res, 200, readNotifications());
+}
+
+function handlePostNotification(req, res) {
+  readJsonBody(req, (err, data) => {
+    if (err) return sendJson(res, 400, { error: 'Invalid JSON body' });
+
+    const { source, title, message, level, url } = data || {};
+    if (!source || !title || !message) {
+      return sendJson(res, 400, { error: 'source, title, and message are required' });
+    }
+
+    const notification = {
+      id: `n_${Date.now()}_${crypto.randomBytes(4).toString('hex')}`,
+      source: String(source).slice(0, 50),
+      level: VALID_LEVELS.includes(level) ? level : 'info',
+      title: String(title).slice(0, 200),
+      message: String(message).slice(0, 1000),
+      url: url ? String(url).slice(0, 500) : null,
+      createdAt: new Date().toISOString(),
+    };
+
+    const list = readNotifications();
+    list.unshift(notification);
+    if (list.length > MAX_NOTIFICATIONS) list.length = MAX_NOTIFICATIONS;
+    writeNotifications(list);
+
+    sendJson(res, 201, notification);
+  });
+}
 
 function loadEnvFile(filePath) {
   if (!fs.existsSync(filePath)) return;
@@ -45,6 +120,13 @@ function send(res, status, body, headers = {}) {
 
 const server = http.createServer((req, res) => {
   let urlPath = decodeURIComponent(req.url.split('?')[0]);
+
+  if (urlPath === '/api/notifications' && req.method === 'GET') {
+    return handleGetNotifications(res);
+  }
+  if (urlPath === '/api/notifications' && req.method === 'POST') {
+    return handlePostNotification(req, res);
+  }
 
   if (Object.prototype.hasOwnProperty.call(REDIRECTS, urlPath)) {
     const target = REDIRECTS[urlPath];
