@@ -59,6 +59,16 @@ function handleGetNotifications(res) {
   sendJson(res, 200, readNotifications());
 }
 
+function handleDeleteNotification(res, id) {
+  const list = readNotifications();
+  const next = list.filter((n) => n.id !== id);
+  if (next.length === list.length) {
+    return sendJson(res, 404, { error: 'Notification not found' });
+  }
+  writeNotifications(next);
+  sendJson(res, 200, { deleted: id });
+}
+
 function handlePostNotification(req, res) {
   readJsonBody(req, (err, data) => {
     if (err) return sendJson(res, 400, { error: 'Invalid JSON body' });
@@ -126,6 +136,9 @@ const server = http.createServer((req, res) => {
   }
   if (urlPath === '/api/notifications' && req.method === 'POST') {
     return handlePostNotification(req, res);
+  }
+  if (urlPath.startsWith('/api/notifications/') && req.method === 'DELETE') {
+    return handleDeleteNotification(res, urlPath.slice('/api/notifications/'.length));
   }
 
   if (Object.prototype.hasOwnProperty.call(REDIRECTS, urlPath)) {

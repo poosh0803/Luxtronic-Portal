@@ -84,3 +84,7 @@ There's no auth on this endpoint — it's assumed to be reachable only from the 
 ### Reading notifications
 
 `GET /api/notifications` returns the stored list (newest first) as JSON — this is what the portal page itself polls.
+
+### Deleting a notification (housekeeping)
+
+`DELETE /api/notifications/:id` removes one stored notification by its `id`. This is a local admin/cleanup tool (e.g. removing a test notification sent by mistake) - it's intentionally **not** part of the cross-service contract in `API.md`, since a sending service shouldn't be deleting notifications it doesn't own. Returns `200 { "deleted": "<id>" }`, or `404` if the id doesn't exist.
