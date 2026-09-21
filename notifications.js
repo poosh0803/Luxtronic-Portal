@@ -70,7 +70,26 @@
                 li.appendChild(link);
             }
 
+            const del = document.createElement('button');
+            del.type = 'button';
+            del.className = 'notif-delete';
+            del.textContent = '×';
+            del.title = 'Delete notification';
+            del.setAttribute('aria-label', 'Delete notification');
+            del.addEventListener('click', () => deleteNotification(n.id));
+            li.appendChild(del);
+
             list.appendChild(li);
+        }
+    }
+
+    async function deleteNotification(id) {
+        notifications = notifications.filter((n) => n.id !== id);
+        render();
+        try {
+            await fetch(`/api/notifications/${encodeURIComponent(id)}`, { method: 'DELETE' });
+        } catch {
+            // next poll will restore the list if the delete didn't reach the server
         }
     }
 

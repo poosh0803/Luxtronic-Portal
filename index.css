@@ -133,6 +133,23 @@ a:hover {
     flex-basis: auto;
     flex-grow: 0;
 }
+.notif-item {
+    position: relative;
+}
+.notif-delete {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    line-height: 1;
+    color: #aaa;
+    cursor: pointer;
+}
+.notif-delete:hover {
+    color: #d32f2f;
+}
 .notif-item:last-child {
     border-bottom: none;
 }
